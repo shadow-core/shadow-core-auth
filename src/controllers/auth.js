@@ -16,7 +16,7 @@ export default class AuthController extends BasicController {
    * @param {Object} config
    */
   constructor(models, config = {}) {
-    super();
+    super(models, config);
     this.core = new ExpressCoreAuth(this.models, this.config);
   }
 
@@ -32,7 +32,7 @@ export default class AuthController extends BasicController {
       type: 'user',
       id: user._id
     };
-    let token = jwt.sign(payload, config.app.jwtSecret, { expiresIn: '1 year' });
+    let token = jwt.sign(payload, this.config.jwtSecret, { expiresIn: '1 year' });
     return res.json({
       token: token
     });

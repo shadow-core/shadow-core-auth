@@ -13,9 +13,8 @@ const jsonResponses = require('../json_responses/getUserToken');
  */
 export default class GetUserTokenValidation extends BasicValidatorInterface {
   /**
-   * Return validators.
    *
-   * @return {any[]}
+   * @return {this[]}
    */
   validators() {
     return [
@@ -24,9 +23,8 @@ export default class GetUserTokenValidation extends BasicValidatorInterface {
         .not().isEmpty().withMessage(jsonResponses.errors.email.empty)
         .isEmail().withMessage(jsonResponses.errors.email.invalid)
         .custom(EmailExistsValidator(this)).withMessage(jsonResponses.errors.email.notExists)
-        .custom(EmailNotVerifiedValidator(this)).withMessage(jsonResponses.errors.email.notVerified)
-
-      .body('password')
+        .custom(EmailNotVerifiedValidator(this)).withMessage(jsonResponses.errors.email.notVerified),
+      body('password')
         .not().isEmpty().withMessage(jsonResponses.errors.password.empty)
         .custom(PasswordCorrect(this)).withMessage(jsonResponses.errors.password.incorrect)
     ];

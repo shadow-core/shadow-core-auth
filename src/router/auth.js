@@ -16,10 +16,10 @@ export default function (router, models, config) {
   const getUserTokenValidation = new GetUserTokenValidation(models);
 
   router
-    .route('/auth/user/token')
+    .route('/auth/token')
     .post(
       getUserTokenValidation.validators(),
       authController.validate.bind(authController),
-      asyncHandler(authController.getUserTokenAction.bind(asyncHandler)),
+      asyncHandler(authController.getUserTokenAction.bind(authController)),
     );
 }

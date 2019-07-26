@@ -5,14 +5,14 @@
   "author": "Gray Hound",
   "license": "ISC",
   "scripts": {
-    "build": "npx babel src --out-dir lib --source-maps inline --copy-files",
+    "build": "npx babel src --out-dir lib --source-maps inline --copy-files --delete-dir-on-start",
     "prepublish": "npm run build",
     "eslint": "npx eslint ./src",
     "eslint-fix": "npx eslint ./src --fix"
   },
   "main": "lib/index.js",
   "dependencies": {
-    "shadow-core-basic": "^0.0.5",
+    "shadow-core-basic": "^0.0.6",
     "express-validator": "^5.3.1",
     "shadow-core-users": "^0.0.9",
     "validator": "^11.1.0",
