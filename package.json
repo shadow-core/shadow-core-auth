@@ -1,6 +1,6 @@
 {
   "name": "shadow-core-auth",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Auth package for Shadow-core project.",
   "author": "Gray Hound",
   "license": "ISC",
