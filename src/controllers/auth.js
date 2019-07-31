@@ -27,6 +27,17 @@ export default class AuthController extends BasicController {
    * @param res
    */
   async getUserTokenAction(req, res) {
+    const errors = this.getValidationResult(req);
+
+    if (!errors.isEmpty()) {
+      let prepared_errors = this.prepareInvalidErrors(errors.array());
+      if (this.core.checkVerificationError(prepared_errors)) {
+        return this.returnError(this.core.jsonResponses.authGetUserToken.errors.email.notVerified, res, 401);
+      } else {
+        return this.returnError(this.core.jsonResponses.authGetUserToken.errors.email.unauthorized, res, 401);
+      }
+    }
+
     let user = req.foundUser;
     let payload = {
       type: 'user',

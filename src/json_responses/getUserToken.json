@@ -16,6 +16,10 @@
       "notVerified": {
         "code": 4,
         "message": "Email is not verified"
+      },
+      "unauthorized": {
+        "code": 401,
+        "message": "Unauthorized"
       }
     },
     "password": {

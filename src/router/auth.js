@@ -16,10 +16,10 @@ export default function (router, models, config) {
   const getUserTokenValidation = new GetUserTokenValidation(models);
 
   router
-    .route('/auth/token')
+    .route('/auth/user/token')
     .post(
       getUserTokenValidation.validators(),
-      authController.validate.bind(authController),
+      // we are missing "validate" method. No need to return 422, return only 401
       asyncHandler(authController.getUserTokenAction.bind(authController)),
     );
 }

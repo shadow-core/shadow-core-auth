@@ -17,4 +17,20 @@ export default class ExpressCoreAuth extends ExpressCoreBasic {
 
     this.addJsonResponses('authGetUserToken', require('./json_responses/getUserToken'));
   }
+
+  /**
+   * Check is there's a email verification error
+   *
+   * @param errors
+   * @returns {boolean}
+   */
+  checkVerificationError(errors) {
+    let result = false;
+    if (errors.length === 1) {
+      if (errors[0].code === 4) {
+        result = true;
+      }
+    }
+    return result;
+  }
 }
