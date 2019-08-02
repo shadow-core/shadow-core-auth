@@ -21,13 +21,13 @@ async function makeUserVerified(models) {
   await user.save();
 }
 
-export default function UserToken(server, apiPrefix, models) {
+export default function UserToken(app, options = {}) {
   describe('User authorization endpoints', () => {
     describe('POST /auth/user/token', () => {
       it('should get an 401 status error without data', (done) => {
-        let data = {};
-        chai.request(server)
-          .post(`${apiPrefix}/auth/user/token`)
+        const data = {};
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/auth/user/token`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(401);
@@ -36,12 +36,12 @@ export default function UserToken(server, apiPrefix, models) {
       });
 
       it('should get an 401 status error with wrong email/password', (done) => {
-        let data = {
-          'email': 'somegibberishemail@someotherlongstring.com',
-          'password': 'someuknownpasswordverylongbutitdoesntexits',
+        const data = {
+          email: 'somegibberishemail@someotherlongstring.com',
+          password: 'someuknownpasswordverylongbutitdoesntexits',
         };
-        chai.request(server)
-          .post(`${apiPrefix}/auth/user/token`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/auth/user/token`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(401);
@@ -50,12 +50,12 @@ export default function UserToken(server, apiPrefix, models) {
       });
 
       it('should get an 401 status error with right email but wrong password', (done) => {
-        let data = {
-          'email': 'test2@test.com',
-          'password': 'thisisverywrongpassword',
+        const data = {
+          email: 'test2@test.com',
+          password: 'thisisverywrongpassword',
         };
-        chai.request(server)
-          .post(`${apiPrefix}/auth/user/token`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/auth/user/token`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(401);
@@ -64,12 +64,12 @@ export default function UserToken(server, apiPrefix, models) {
       });
 
       it('should authorize with correct email/password and get a token', (done) => {
-        let data = {
-          'email': 'test2@test.com',
-          'password': 'test',
+        const data = {
+          email: 'test2@test.com',
+          password: 'test',
         };
-        chai.request(server)
-          .post(`${apiPrefix}/auth/user/token`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/auth/user/token`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(200);
@@ -82,15 +82,15 @@ export default function UserToken(server, apiPrefix, models) {
 
     describe('POST /auth/user/token unverified', () => {
       before(async function() {
-        await makeUserUnverified(models);
+        await makeUserUnverified(app.models);
       });
       it('should get a 401 error with verification error message', (done) => {
-        let data = {
-          'email': 'test2@test.com',
-          'password': 'test',
+        const data = {
+          email: 'test2@test.com',
+          password: 'test',
         };
-        chai.request(server)
-          .post(`${apiPrefix}/auth/user/token`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/auth/user/token`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(401);
@@ -104,15 +104,15 @@ export default function UserToken(server, apiPrefix, models) {
 
     describe('POST /auth/user/token verified', () => {
       before(async function() {
-        await makeUserVerified(models);
+        await makeUserVerified(app.models);
       });
       it('should authenticate again', (done) => {
-        let data = {
-          'email': 'test2@test.com',
-          'password': 'test',
+        const data = {
+          email: 'test2@test.com',
+          password: 'test',
         };
-        chai.request(server)
-          .post(`${apiPrefix}/auth/user/token`)
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/auth/user/token`)
           .send(data)
           .end((err, res) => {
             res.should.have.status(200);

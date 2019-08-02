@@ -5,6 +5,6 @@ export default function PasswordCorrectValidator(validation) {
     if (!validation.user) {
       return true;
     }
-    return bcrypt.compareSync(value, validation.user.password_hash);
+    return bcrypt.compareSync(value, validation.user.passwordHash);
   });
 }

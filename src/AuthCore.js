@@ -6,14 +6,12 @@ import { ExpressCoreBasic } from 'shadow-core-basic';
  */
 export default class AuthCore extends ExpressCoreBasic {
   /**
-   * Prepare json responses and get list if models.
+   * AuthCore constructor
    *
    * @param {Object} models
    */
-  constructor(models, config) {
-    super();
-    this.models = models;
-    this.config = config;
+  constructor(app) {
+    super(app);
 
     this.addJsonResponses('authGetUserToken', require('./json_responses/getUserToken'));
   }

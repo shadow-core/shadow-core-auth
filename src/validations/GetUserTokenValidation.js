@@ -22,11 +22,18 @@ export default class GetUserTokenValidation extends BasicValidatorInterface {
       body('email').trim()
         .not().isEmpty().withMessage(jsonResponses.errors.email.empty)
         .isEmail().withMessage(jsonResponses.errors.email.invalid)
-        .custom(EmailExistsValidator(this)).withMessage(jsonResponses.errors.email.notExists)
-        .custom(EmailNotVerifiedValidator(this)).withMessage(jsonResponses.errors.email.notVerified),
+
+        .custom(EmailExistsValidator(this))
+        .withMessage(jsonResponses.errors.email.notExists)
+
+        .custom(EmailNotVerifiedValidator(this))
+        .withMessage(jsonResponses.errors.email.notVerified),
+      // password
       body('password')
         .not().isEmpty().withMessage(jsonResponses.errors.password.empty)
-        .custom(PasswordCorrectValidator(this)).withMessage(jsonResponses.errors.password.incorrect)
+
+        .custom(PasswordCorrectValidator(this))
+        .withMessage(jsonResponses.errors.password.incorrect),
     ];
   }
 

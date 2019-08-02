@@ -12,12 +12,11 @@ export default class AuthController extends BasicController {
   /**
    * Constructor.
    *
-   * @param {Object} models
-   * @param {Object} config
+   * @param {Object} app
    */
-  constructor(models, config = {}) {
-    super(models, config);
-    this.core = new AuthCore(this.models, this.config);
+  constructor(app) {
+    super(app);
+    this.core = new AuthCore(app);
   }
 
   /**
@@ -30,22 +29,28 @@ export default class AuthController extends BasicController {
     const errors = this.getValidationResult(req);
 
     if (!errors.isEmpty()) {
-      let prepared_errors = this.prepareInvalidErrors(errors.array());
-      if (this.core.checkVerificationError(prepared_errors)) {
-        return this.returnError(this.core.jsonResponses.authGetUserToken.errors.email.notVerified, res, 401);
+      const preparedErrors = this.prepareInvalidErrors(errors.array());
+      if (this.core.checkVerificationError(preparedErrors)) {
+        return this.returnError(
+          this.core.jsonResponses.authGetUserToken.errors.email.notVerified,
+          res, 401,
+        );
       } else {
-        return this.returnError(this.core.jsonResponses.authGetUserToken.errors.email.unauthorized, res, 401);
+        return this.returnError(
+          this.core.jsonResponses.authGetUserToken.errors.email.unauthorized,
+          res, 401,
+        );
       }
     }
 
-    let user = req.foundUser;
-    let payload = {
+    const user = req.foundUser;
+    const payload = {
       type: 'user',
-      id: user._id
+      id: user._id,
     };
-    let token = jwt.sign(payload, this.config.jwtSecret, { expiresIn: '1 year' });
+    const token = jwt.sign(payload, this.app.config.auth.jwtSecret, { expiresIn: '1 year' });
     return res.json({
-      token: token
+      token
     });
   }
 

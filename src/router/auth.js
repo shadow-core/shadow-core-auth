@@ -10,12 +10,12 @@ const asyncHandler = require('express-async-handler');
  * @param {Object} models Application models
  * @param {Object} config Additional configuration
  */
-export default function (router, models, config) {
-  const authController = new AuthController(models, config);
+export default function (app) {
+  const authController = new AuthController(app);
 
-  const getUserTokenValidation = new AuthValidations.GetUserTokenValidation(models);
+  const getUserTokenValidation = new AuthValidations.GetUserTokenValidation(app);
 
-  router
+  app.router
     .route('/auth/user/token')
     .post(
       getUserTokenValidation.validators(),
