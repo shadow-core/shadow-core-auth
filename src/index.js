@@ -1,19 +1,19 @@
 // main classes
-import ExpressCoreAuth from './ExpressCoreAuth';
-import ExpressCoreAuthValidations from './validations';
+import AuthCore from './AuthCore';
+import AuthValidations from './validations';
 import AuthController from './controllers/auth';
 import AuthRouter from './router/auth';
 
 //tests
-import ExpressCoreAuthTestsUserToken from './tests/userToken';
+import AuthTests from './tests';
 
 export {
   // export main classes
-  ExpressCoreAuth,
-  ExpressCoreAuthValidations,
+  AuthCore,
+  AuthValidations,
   AuthController,
   // Router
   AuthRouter,
   // Tests
-  ExpressCoreAuthTestsUserToken
+  AuthTests
 };

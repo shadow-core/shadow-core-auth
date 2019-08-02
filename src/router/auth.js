@@ -1,5 +1,5 @@
 import AuthController from '../controllers/auth';
-import GetUserTokenValidation from '../validations/GetUserTokenValidation';
+import AuthValidations from '../validations';
 
 const asyncHandler = require('express-async-handler');
 
@@ -13,7 +13,7 @@ const asyncHandler = require('express-async-handler');
 export default function (router, models, config) {
   const authController = new AuthController(models, config);
 
-  const getUserTokenValidation = new GetUserTokenValidation(models);
+  const getUserTokenValidation = new AuthValidations.GetUserTokenValidation(models);
 
   router
     .route('/auth/user/token')

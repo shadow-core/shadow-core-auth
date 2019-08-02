@@ -1,5 +1,5 @@
 import GetUserTokenValidation from './GetUserTokenValidation';
 
-export {
+export default {
   GetUserTokenValidation,
 };

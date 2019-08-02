@@ -2,7 +2,7 @@ import { BasicValidatorInterface } from 'shadow-core-basic';
 
 import EmailExistsValidator from 'shadow-core-users/lib/validations/validators/EmailExistsValidator';
 import EmailNotVerifiedValidator from 'shadow-core-users/lib/validations/validators/EmailNotVerifiedValidator';
-import PasswordCorrect from './validators/PasswordCorrect';
+import PasswordCorrectValidator from './validators/PasswordCorrectValidator';
 
 const { body } = require('express-validator/check');
 const jsonResponses = require('../json_responses/getUserToken');
@@ -26,7 +26,7 @@ export default class GetUserTokenValidation extends BasicValidatorInterface {
         .custom(EmailNotVerifiedValidator(this)).withMessage(jsonResponses.errors.email.notVerified),
       body('password')
         .not().isEmpty().withMessage(jsonResponses.errors.password.empty)
-        .custom(PasswordCorrect(this)).withMessage(jsonResponses.errors.password.incorrect)
+        .custom(PasswordCorrectValidator(this)).withMessage(jsonResponses.errors.password.incorrect)
     ];
   }
 

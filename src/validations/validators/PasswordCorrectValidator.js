@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 
-export default function PasswordCorrect(validation) {
+export default function PasswordCorrectValidator(validation) {
   return ((value) => {
     if (!validation.user) {
       return true;

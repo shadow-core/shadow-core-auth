@@ -1,10 +1,10 @@
 import { ExpressCoreBasic } from 'shadow-core-basic';
 
 /**
- * @class ExpressCoreAuth
+ * @class AuthCore
  * @classdesc This is main class with all required methods for user actions.
  */
-export default class ExpressCoreAuth extends ExpressCoreBasic {
+export default class AuthCore extends ExpressCoreBasic {
   /**
    * Prepare json responses and get list if models.
    *

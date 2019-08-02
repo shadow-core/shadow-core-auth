@@ -1,5 +1,5 @@
 import { BasicController } from 'shadow-core-basic';
-import ExpressCoreAuth from '../ExpressCoreAuth';
+import AuthCore from '../AuthCore';
 
 let jwt = require('jsonwebtoken');
 
@@ -17,7 +17,7 @@ export default class AuthController extends BasicController {
    */
   constructor(models, config = {}) {
     super(models, config);
-    this.core = new ExpressCoreAuth(this.models, this.config);
+    this.core = new AuthCore(this.models, this.config);
   }
 
   /**

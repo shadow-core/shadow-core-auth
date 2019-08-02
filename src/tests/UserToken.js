@@ -21,7 +21,7 @@ async function makeUserVerified(models) {
   await user.save();
 }
 
-export default function ExpressCoreAuthTestsUserToken(server, apiPrefix, models) {
+export default function UserToken(server, apiPrefix, models) {
   describe('User authorization endpoints', () => {
     describe('POST /auth/user/token', () => {
       it('should get an 401 status error without data', (done) => {
