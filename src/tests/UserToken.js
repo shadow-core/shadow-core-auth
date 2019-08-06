@@ -8,15 +8,15 @@ const { expect } = chai;
 chai.use(chaiHttp);
 chai.use(chaiSubset);
 
-async function makeUserUnverified(models) {
-  let user = await models.User.findByEmail('test2@test.com');
+async function makeUserUnverified(app) {
+  const user = await app.models.User.findByEmail('test2@test.com');
   user.isEmailVerified = false;
-  user.registrationDate = Date.now() - 10 * 24 * 60 * 60 * 1000;
+  user.registrationDate -= (app.config.users.maxVerificationTime + 100);
   await user.save();
 }
 
-async function makeUserVerified(models) {
-  let user = await models.User.findByEmail('test2@test.com');
+async function makeUserVerified(app) {
+  const user = await app.models.User.findByEmail('test2@test.com');
   user.isEmailVerified = true;
   await user.save();
 }
@@ -82,7 +82,7 @@ export default function UserToken(app, options = {}) {
 
     describe('POST /auth/user/token unverified', () => {
       before(async function() {
-        await makeUserUnverified(app.models);
+        await makeUserUnverified(app);
       });
       it('should get a 401 error with verification error message', (done) => {
         const data = {
@@ -104,7 +104,7 @@ export default function UserToken(app, options = {}) {
 
     describe('POST /auth/user/token verified', () => {
       before(async function() {
-        await makeUserVerified(app.models);
+        await makeUserVerified(app);
       });
       it('should authenticate again', (done) => {
         const data = {
