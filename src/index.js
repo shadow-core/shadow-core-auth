@@ -3,8 +3,9 @@ import AuthCore from './AuthCore';
 import AuthValidations from './validations';
 import AuthController from './controllers/auth';
 import AuthRouter from './router/auth';
+import AuthPassportCheck from './auth/auth';
 
-//tests
+// tests
 import AuthTests from './tests';
 
 export {
@@ -15,5 +16,7 @@ export {
   // Router
   AuthRouter,
   // Tests
-  AuthTests
+  AuthTests,
+  // PassportAuthentication
+  AuthPassportCheck,
 };
