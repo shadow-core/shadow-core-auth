@@ -1,7 +1,7 @@
 import { BasicController } from 'shadow-core-basic';
 import AuthCore from '../AuthCore';
 
-let jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
 /**
  * @class AuthController
@@ -50,7 +50,7 @@ export default class AuthController extends BasicController {
     };
     const token = jwt.sign(payload, this.app.config.auth.jwtSecret, { expiresIn: '1 year' });
     return res.json({
-      token
+      token,
     });
   }
 

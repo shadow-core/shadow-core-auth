@@ -26,10 +26,7 @@ export default class AuthPassportCheck {
         if (!user.checkEmailVerified()) {
           return done(null, false);
         }
-        return done(null, {
-          type: 'user',
-          _id: user._id,
-        });
+        return done(null, user);
       });
     });
     passport.use('jwt-main', this.strategy);
