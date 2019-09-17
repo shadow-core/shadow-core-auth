@@ -48,10 +48,40 @@ export default class AuthController extends BasicController {
       type: 'user',
       id: user._id,
     };
-    const token = jwt.sign(payload, this.app.config.auth.jwtSecret, { expiresIn: '1 year' });
+    const token = jwt.sign(payload, this.app.config.auth.jwtSecret, {
+      expiresIn: this.app.config.auth.tokenExpiresIn,
+    });
+    const refreshToken = jwt.sign(payload, this.app.config.auth.jwtSecretRefresh, {
+      expiresIn: this.app.config.auth.refreshTokenExpiresIn,
+    });
     return res.json({
       token,
+      refreshToken,
     });
   }
 
+  /**
+   * Refresh access token.
+   *
+   * @param req
+   * @param res
+   * @return {Promise<*|void|Chai.Assertion|Promise<any>|*>}
+   */
+  async getUserTokenRefreshAction(req, res) {
+    const user = req.user;
+    const payload = {
+      type: 'user',
+      id: user._id,
+    };
+    const token = jwt.sign(payload, this.app.config.auth.jwtSecret, {
+      expiresIn: this.app.config.auth.tokenExpiresIn,
+    });
+    const refreshToken = jwt.sign(payload, this.app.config.auth.jwtSecretRefresh, {
+      expiresIn: this.app.config.auth.refreshTokenExpiresIn,
+    });
+    return res.json({
+      token,
+      refreshToken,
+    });
+  }
 }

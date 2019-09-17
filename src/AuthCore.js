@@ -13,6 +13,13 @@ export default class AuthCore extends ExpressCoreBasic {
   constructor(app) {
     super(app);
 
+    if (this.app.config.auth.tokenExpiresIn === undefined) {
+      this.app.config.auth.tokenExpiresIn = '1 hour';
+    }
+    if (this.app.config.auth.refreshTokenExpiresIn === undefined) {
+      this.app.config.auth.refreshTokenExpiresIn = '1 day';
+    }
+
     this.addJsonResponses('authGetUserToken', require('./json_responses/getUserToken'));
   }
 
