@@ -22,6 +22,9 @@ async function makeUserVerified(app) {
 }
 
 export default function UserToken(app, options = {}) {
+  let accessToken;
+  let refreshToken;
+
   describe('User authorization endpoints', () => {
     describe('POST /auth/user/token', () => {
       it('should get an 401 status error without data', (done) => {
@@ -75,6 +78,11 @@ export default function UserToken(app, options = {}) {
             res.should.have.status(200);
             res.body.should.be.a('object');
             res.body.should.have.property('token');
+            res.body.should.have.property('refreshToken');
+
+            accessToken = res.body.token;
+            refreshToken = res.body.refreshToken;
+
             done();
           });
       });
@@ -118,6 +126,22 @@ export default function UserToken(app, options = {}) {
             res.should.have.status(200);
             res.body.should.be.a('object');
             res.body.should.have.property('token');
+            done();
+          });
+      });
+    });
+
+    describe('POST /auth/user/token/refresh', () => {
+      it('should get new tokens using refreshToken', (done) => {
+        chai.request(app.server)
+          .post(`${options.apiPrefix}/auth/user/token/refresh`)
+          .send()
+          .set('Authorization', `Bearer ${refreshToken}`)
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.a('object');
+            res.body.should.have.property('token');
+            res.body.should.have.property('refreshToken');
             done();
           });
       });
