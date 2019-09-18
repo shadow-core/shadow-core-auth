@@ -23,7 +23,7 @@ export default class RefreshPassportCheck {
         if (err || !user) {
           return done(null, false);
         }
-        if (!user.checkEmailVerified()) {
+        if (!user.checkEmailVerified(this.app)) {
           return done(null, false);
         }
         return done(null, user);

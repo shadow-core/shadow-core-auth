@@ -88,27 +88,51 @@ export default function UserToken(app, options = {}) {
       });
     });
 
-    describe('POST /auth/user/token unverified', () => {
-      before(async function() {
-        await makeUserUnverified(app);
+    if (app.config.users.mustVerifyEmail) {
+      describe('POST /auth/user/token unverified', () => {
+        before(async function() {
+          await makeUserUnverified(app);
+        });
+        it('should get a 401 error with verification error message', (done) => {
+          const data = {
+            email: 'test2@test.com',
+            password: 'test',
+          };
+          chai.request(app.server)
+            .post(`${options.apiPrefix}/auth/user/token`)
+            .send(data)
+            .end((err, res) => {
+              res.should.have.status(401);
+              res.body.should.be.a('object');
+              res.body.should.have.property('code').eq(4);
+              res.body.should.have.property('success').eq(false);
+              done();
+            });
+        });
       });
-      it('should get a 401 error with verification error message', (done) => {
-        const data = {
-          email: 'test2@test.com',
-          password: 'test',
-        };
-        chai.request(app.server)
-          .post(`${options.apiPrefix}/auth/user/token`)
-          .send(data)
-          .end((err, res) => {
-            res.should.have.status(401);
-            res.body.should.be.a('object');
-            res.body.should.have.property('code').eq(4);
-            res.body.should.have.property('success').eq(false);
-            done();
-          });
+    } else {
+      describe('POST /auth/user/token unverified', () => {
+        before(async function() {
+          await makeUserUnverified(app);
+        });
+        it('should NOT get 401 error EVEN if user verification params were changed in the DB', (done) => {
+          const data = {
+            email: 'test2@test.com',
+            password: 'test',
+          };
+          chai.request(app.server)
+            .post(`${options.apiPrefix}/auth/user/token`)
+            .send(data)
+            .end((err, res) => {
+              res.should.have.status(200);
+              res.body.should.be.a('object');
+              res.body.should.have.property('token');
+              res.body.should.have.property('refreshToken');
+              done();
+            });
+        });
       });
-    });
+    }
 
     describe('POST /auth/user/token verified', () => {
       before(async function() {
