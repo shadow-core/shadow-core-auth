@@ -35,18 +35,18 @@ export default class AuthController extends BasicController {
           this.core.jsonResponses.authGetUserToken.errors.email.notVerified,
           res, 401,
         );
-      } else {
-        return this.returnError(
-          this.core.jsonResponses.authGetUserToken.errors.email.unauthorized,
-          res, 401,
-        );
       }
+      return this.returnError(
+        this.core.jsonResponses.authGetUserToken.errors.email.unauthorized,
+        res, 401,
+      );
     }
 
     const user = req.foundUser;
     const payload = {
       type: 'user',
       id: user._id,
+      email: user.email,
     };
     const token = jwt.sign(payload, this.app.config.auth.jwtSecret, {
       expiresIn: this.app.config.auth.tokenExpiresIn,
